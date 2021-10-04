@@ -1,0 +1,78 @@
+﻿@model List<DCDGear.ViewModel.OrderDetailModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">PRODUCT</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+            <li class="breadcrumb-item active">Danh sach</li>
+        </ol>
+        <div class="card mb-4">
+        </div>
+        <div class="card mb-4">
+            <div class="card-header">
+                <a href="/admin/new/create" class="btn btn-blue btn-flat" style="background-color:#1D89E2; color: #ffffff"><i class="far fa-plus"></i>&nbsp;Thêm mới</a>
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th scope="col">Số thứ tự</th>
+                            <th scope="col">Người đặt hàng</th>
+                            <th scope="col">Sản phẩm đặt</th>
+                            <th scope="col">Số lượng</th>
+                            <th scope="col">Tên người nhận</th>
+                            <th scope="col">Địa chỉ người nhận</th>
+                            <th scope="col">Email người nhận</th>
+                            <th scope="col">SDT người nhận</th>
+                            <th scope="col">Trạng thái</th>
+                            <th scope="col">Tổng tiền</th>
+                            <th scope="col">Tác vụ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                        <tr id="row_@item.ID">
+                            <td>@item.ID</td>
+                            <td>@item.OrderUser</td>
+                            <td>@item.ProductOrder</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.ShipName</td>
+                            <td>@item.ShipAddress</td>
+                            <td>@item.ShipEmail</td>
+                            <td>@item.ShipPhone</td>
+                            @{
+                                if (item.Status == 1)
+                                {
+                                    <td style="color:green">Đang chờ xác nhận</td>
+                                }
+                                else
+                                {
+                                    <td>Đã giao hàng</td>
+                                }
+                            }
+                            <td>@item.Price.Value.ToString("N0")</td>
+                            <td>
+                                <a href="/Admin/Order/Delete/@item.ID">Xóa</a>  ||
+                                <i class="zmdi zmdi - delete">
+                                    @Ajax.ActionLink("Update", "Update", new { @id = item.ID }, new AjaxOptions
+    {
+     Confirm = "Are you sure?",
+     HttpMethod = "Post"
+    })
+                                </i>
+                            </td>
+                        </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+

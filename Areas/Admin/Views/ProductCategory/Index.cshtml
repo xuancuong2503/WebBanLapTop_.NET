@@ -1,0 +1,72 @@
+﻿@model List<DCDGear.Models.ProductCategory>
+@{
+    ViewBag.Title = "Sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section js{
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+}
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">PRODUCT</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+            <li class="breadcrumb-item active">Danh sach</li>
+        </ol>
+        <div class="card mb-4">
+        </div>
+        <div class="card mb-4">
+            <div class="card-header">
+                <a href="/admin/productcategory/create" class="btn btn-blue btn-flat" style="background-color:#1D89E2; color: #ffffff"><i class="far fa-plus"></i>&nbsp;Thêm mới</a>
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+
+                            <th scope="col">Tên Danh mục</th>
+                            <th scope="col">Trạng thái</th>
+                            <th scope="col">Tác vụ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model.Where(d => d.ParentID == null))
+                        {
+                            var child = Model.Where(d => d.ParentID == item.ID);
+                            <tr id="row_@item.ID">
+                                <td style="background-color:yellow"><b>@item.Name</b></td>
+                                <td style="background-color:yellow">
+                                    @if (item.Status == true)
+                                    {<span> Đang hoạt động</span>}
+
+                                    else
+                                    {<span> Không hoạt động</span>}
+                                </td>
+                                <td style="background-color:yellow"></td>
+                                @foreach (var childItem in child)
+                                {
+                                <tr id="row_@childItem.ID">
+                                    <td>@childItem.Name</td>
+                                    <td>
+                                        @if (childItem.Status == true)
+                                        {<span> Đang hoạt động</span>}
+
+                                        else
+                                        {<span> Không hoạt động</span>}
+                                    </td>
+                                    <td>
+                                        <a href="/Admin/ProductCategory/Edit/@childItem.ID">Edit</a>  ||
+                                        <a href="/Admin/ProductCategory/Delete/@childItem.ID">Xóa</a>
+                                    </td>
+                                </tr>
+                            }
+                                </tr>
+                            }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
